@@ -1,0 +1,14 @@
+ret_w lag {'tmean_anom_hq': {'coef': -0.0001, 't': -1.27114}, 'tmean_anom_hq_lag3': {'coef': 0.0, 't': 0.003}}
+ret_w lag {'hot_hq': {'coef': -0.00016, 't': -1.30366}, 'cold_hq': {'coef': 2e-05, 't': 0.12897}, 'hot_hq_lag3': {'coef': 0.00012, 't': 1.07209}, 'cold_hq_lag3': {'coef': 0.00016, 't': 0.94958}}
+ret_w warmer {'hot_hq': {'coef': -0.00013, 't': -0.97002}, 'cold_hq': {'coef': -3e-05, 't': -0.17155}, 'hot_x_warm': {'coef': -2e-05, 't': -0.14846}, 'cold_x_warm': {'coef': 0.0001, 't': 0.55656}}
+ret_w thesis_fe {'tmean_anom_hq': {'coef': 0.00028, 't': 0.90246}}
+ret_w thesis_fe {'hot_hq': {'coef': 0.00049, 't': 0.94}, 'cold_hq': {'coef': 1e-05, 't': 0.01126}}
+ret_w coarse_ind {'tmean_anom_hq': {'coef': -7e-05, 't': -0.63089}}
+ret_w fixed_normal {'tmean_anom_norm_hq': {'coef': -7e-05, 't': -0.95031}}
+sd_w lag {'tmean_anom_hq': {'coef': -0.0, 't': -0.56315}, 'tmean_anom_hq_lag3': {'coef': -0.0, 't': -0.40243}}
+sd_w lag {'hot_hq': {'coef': -1e-05, 't': -0.44089}, 'cold_hq': {'coef': 0.0, 't': 0.25623}, 'hot_hq_lag3': {'coef': 1e-05, 't': 0.59553}, 'cold_hq_lag3': {'coef': 2e-05, 't': 1.20189}}
+sd_w warmer {'hot_hq': {'coef': -0.0, 't': -0.06885}, 'cold_hq': {'coef': -0.0, 't': -0.11755}, 'hot_x_warm': {'coef': -1e-05, 't': -0.36015}, 'cold_x_warm': {'coef': 2e-05, 't': 0.84457}}
+sd_w thesis_fe {'tmean_anom_hq': {'coef': -1e-05, 't': -0.22507}}
+sd_w thesis_fe {'hot_hq': {'coef': 1e-05, 't': 0.12872}, 'cold_hq': {'coef': 3e-05, 't': 0.47109}}
+sd_w coarse_ind {'tmean_anom_hq': {'coef': -0.0, 't': -0.30422}}
+sd_w fixed_normal {'tmean_anom_norm_hq': {'coef': -0.0, 't': -0.4996}}

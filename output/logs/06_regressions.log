@@ -1,0 +1,10 @@
+ret_w signed mean anomaly {'tmean_anom_hq': {'coef': -9e-05, 't': -1.22076}}
+ret_w hot / cold split {'hot_hq': {'coef': -0.00015, 't': -1.22426}, 'cold_hq': {'coef': 2e-05, 't': 0.14384}}
+ret_w tmax / tmin anomalies {'tmax_anom_hq': {'coef': -0.00012, 't': -1.348}, 'tmin_anom_hq': {'coef': 6e-05, 't': 0.67228}}
+ret_w |mean anomaly| (thesis concept, fixed) {'tmean_absanom_hq': {'coef': -9e-05, 't': -0.83323}}
+ret_w hot / cold x heat-sensitive {'hot_hq': {'coef': -0.00012, 't': -0.93341}, 'cold_hq': {'coef': -3e-05, 't': -0.19247}, 'hot_x_hs': {'coef': -8e-05, 't': -0.41857}, 'cold_x_hs': {'coef': 0.00015, 't': 0.60359}}
+sd_w signed mean anomaly {'tmean_anom_hq': {'coef': -1e-05, 't': -0.65328}}
+sd_w hot / cold split {'hot_hq': {'coef': -0.0, 't': -0.37992}, 'cold_hq': {'coef': 1e-05, 't': 0.44739}}
+sd_w tmax / tmin anomalies {'tmax_anom_hq': {'coef': 1e-05, 't': 0.66718}, 'tmin_anom_hq': {'coef': -1e-05, 't': -1.09353}}
+sd_w |mean anomaly| (thesis concept, fixed) {'tmean_absanom_hq': {'coef': -0.0, 't': -0.07241}}
+sd_w hot / cold x heat-sensitive {'hot_hq': {'coef': -1e-05, 't': -0.53448}, 'cold_hq': {'coef': 1e-05, 't': 0.55782}, 'hot_x_hs': {'coef': 1e-05, 't': 0.31135}, 'cold_x_hs': {'coef': -0.0, 't': -0.15426}}

@@ -1,0 +1,22 @@
+thesis rows: 1,963,007  firms: 18,043
+found in rebuilt panel: 100.00%
+
+thesis column     rebuilt column               match(|d|<0.01)    corr          n
+Temp_City         T_mean_legacy_hq_nameonly              0.778   0.807  1,963,007
+Max_City          T_max_legacy_hq_nameonly               0.774   0.923  1,963,007
+Min_City          T_min_legacy_hq_nameonly               0.774   0.913  1,963,007
+Pre_City          P_legacy_hq_nameonly                   0.782   0.968  1,963,007
+Temp_EX           T_mean_legacy_ex                       1.000   0.999  1,963,007
+Max_Ex            T_max_legacy_ex                        0.999   0.999  1,963,007
+Min_Ex            T_min_legacy_ex                        0.999   1.000  1,963,007
+pre_EX            P_legacy_ex                            0.999   0.999  1,963,007
+SD                sd_legacy                              1.000   1.000  1,963,007
+Return            trt1m                                  1.000   1.000  1,962,915
+Heat_sensitive    heat_sensitive                         1.000   1.000  1,963,007
+Different_cities  different_city_legacy                  1.000   1.000  1,963,007
+
+How often does the city-name-only climate match the city+state climate?
+  same location: 54.9% of 1,830,624 firm-months -> 45.1% got another place's weather
+  no city+state match at all (e.g. foreign HQ matched to a US name): 6.7%
+
+Thesis HQ temperature equals the correct (city, state) location in 55.5% of 1,830,624 firm-months; firms entirely on a wrong town: 7,294 of 16,883

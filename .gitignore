@@ -1,0 +1,10 @@
+# Licensed / large data — never commit
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
+*.parquet
+*.csv
+!output/tables/*.csv
+*.dta
+__pycache__/
+.DS_Store
