@@ -70,15 +70,17 @@ folder), keeping the file names and sub-folders listed:
 | PRISM normals | `Climate Data/daily/` | 1991–2020 daily normals (tmin, tmean, tmax, ppt) |
 | Simplemaps | `uscities.csv` | city, state, lat/lng (= PRISM query points) |
 | Market | `Climate Data/SP500 and VIX.csv` | monthly % change S&P 500 and VIX |
+| *Optional:* thesis files | `Climate Data/log-return.csv`, `daily_1995-2005.csv`, `daily_2006-2016.csv`, `daily_2017-2024.csv` | the thesis's own intermediate files, used only to compare the rebuild with the thesis (not distributed) |
 
 - **Compustat** — requires a WRDS subscription (most universities have one).
 - **PRISM** — free from the PRISM Climate Group, Oregon State University (https://prism.oregonstate.edu).
 - **Simplemaps US Cities** (basic, free) — https://simplemaps.com/data/us-cities.
 
-`05_validate_rebuild.py` additionally compares against the thesis's original
-final data file (`Climate Data/log-return.csv`), which is not distributed; skip
-that step if you don't have it. All results in `output/` were produced with the
-full data and are included so they can be checked without rerunning.
+Without the optional thesis files, `run_all.sh` still runs end to end: it skips
+the comparison steps (thesis volatility, `05_validate_rebuild.py` and the thesis-table
+replication in `06_regressions.py`) and produces all corrected results. All results
+in `output/` were produced with the full data and are included so they can be
+checked without rerunning.
 
 ## Run
 
@@ -109,8 +111,8 @@ Requires Python 3 with pandas, numpy, pyarrow, matplotlib (`pip install -r requi
 
 ## Citation
 
-Shokat, A. (2024). *Warming Trends: Analysing the impact of climate change on
-the risk and return of the US stock market* (MSc thesis). Utrecht University.
+Shokatabadi, A. (2024). *Warming trends: Analysing the impact of temperature anomaly
+on the risk and return of the US stock market* (MSc thesis). Utrecht University.
 
 ## License
 

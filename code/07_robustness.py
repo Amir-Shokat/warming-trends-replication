@@ -13,11 +13,10 @@ two-way clustered SEs, HQ in continental US). Each check changes one thing:
 
 Output: output/tables/robustness_results.csv, robustness_results.md
 """
-from math import erf, sqrt
 import numpy as np
 import pandas as pd
 import config as C
-from fe import feols
+from fe import bh_qvalues, feols, normal_p
 
 
 def load():
@@ -66,9 +65,8 @@ def main():
             rows.append(r)
             print(y, check, r[["coef", "t"]].round(5).to_dict("index"), flush=True)
     res = pd.concat(rows).rename_axis("variable").reset_index()
-    res["p"] = [2 * (1 - 0.5 * (1 + erf(abs(t) / sqrt(2)))) for t in res.t]
-    order = res.p.rank(method="first")
-    res["q_bh"] = (res.p * len(res) / order).sort_values(ascending=False).cummin().reindex(res.index).clip(upper=1)
+    res["p"] = normal_p(res.t)
+    res["q_bh"] = bh_qvalues(res.p)
     res.to_csv(C.TABLES / "robustness_results.csv", index=False)
 
     def fmt(r):

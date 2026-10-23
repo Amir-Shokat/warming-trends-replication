@@ -16,7 +16,7 @@ Outputs: output/tables/replication_thesis.csv, corrected_results.csv, corrected_
 import numpy as np
 import pandas as pd
 import config as C
-from fe import feols
+from fe import bh_qvalues, feols, normal_p
 
 CLIM = {  # spec name -> climate regressors (HQ)
     "signed mean anomaly": ["tmean_anom_hq"],
@@ -62,12 +62,8 @@ def corrected():
     res = pd.concat(rows).rename_axis("variable").reset_index()
 
     # Benjamini-Hochberg across all temperature coefficients (two-sided normal p-values)
-    from math import erf, sqrt
-    res["p"] = [2 * (1 - 0.5 * (1 + erf(abs(t) / sqrt(2)))) for t in res.t]
-    order = res.p.rank(method="first")
-    m = len(res)
-    q = (res.p * m / order).sort_values(ascending=False).cummin()
-    res["q_bh"] = q.reindex(res.index).clip(upper=1)
+    res["p"] = normal_p(res.t)
+    res["q_bh"] = bh_qvalues(res.p)
     res.to_csv(C.TABLES / "corrected_results.csv", index=False)
 
     def fmt(r):
@@ -85,6 +81,10 @@ def corrected():
 
 if __name__ == "__main__":
     import sys
-    if "--skip-replication" not in sys.argv:
+    if "--skip-replication" in sys.argv:
+        pass
+    elif not C.LEGACY_FINAL.exists():
+        print(f"skipping thesis replication: {C.LEGACY_FINAL.name} not found (not distributed)")
+    else:
         replication()
     corrected()

@@ -8,6 +8,7 @@ as used in the thesis. 05/06 scripts verify it reproduces the thesis tables.
 """
 import numpy as np
 import pandas as pd
+from math import erf, sqrt
 
 
 def _demean(M, codes, tol=1e-9, maxit=500):
@@ -54,3 +55,21 @@ def feols(df, y, xs, fe, cluster):
     r2_within = 1 - (u @ u) / ((Y - Y.mean()) @ (Y - Y.mean()))
     return pd.DataFrame({"coef": b, "se": se, "t": b / se}, index=xs).assign(
         n=len(d), firms=d[cluster[0]].nunique() if cluster else np.nan, r2_within=r2_within)
+
+
+def normal_p(t):
+    """Two-sided p-values from t-statistics (normal approximation, large N)."""
+    return np.array([2 * (1 - 0.5 * (1 + erf(abs(v) / sqrt(2)))) for v in t])
+
+
+def bh_qvalues(p):
+    """Benjamini-Hochberg adjusted p-values, returned in the input order.
+
+    Sort p ascending, take p_(i) * m / i, then a running minimum from the largest p down.
+    """
+    p = pd.Series(np.asarray(p, dtype=float))
+    m = len(p)
+    order = p.sort_values(kind="mergesort").index
+    adj = p[order] * m / np.arange(1, m + 1)
+    q = adj[::-1].cummin()[::-1].clip(upper=1)
+    return q.reindex(p.index).to_numpy()

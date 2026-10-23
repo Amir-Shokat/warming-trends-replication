@@ -35,8 +35,10 @@ COMPUSTAT_MONTHLY_PRICE = RAW_CLIMATE / "monthly price.csv"  # gvkey,iid,datadat
 COMPUSTAT_DAILY = [RAW / f for f in ("daily1.csv", "daily2.csv", "daily3.csv")]  # gvkey,iid,datadate,prccd,exchg,city
 MARKET = RAW_CLIMATE / "SP500 and VIX.csv"                    # date (YYYY-MM), SP500, VIX (monthly % changes)
 
-# The thesis's final regression file, used only to check the rebuild.
-LEGACY_FINAL = RAW_CLIMATE / "log-return.csv"
+# Optional thesis files, used only to compare the rebuild with the thesis. They are not
+# distributed; every step runs without them and skips the comparison.
+LEGACY_FINAL = RAW_CLIMATE / "log-return.csv"   # the thesis's final regression file
+LEGACY_DAILY = [RAW / f for f in ("daily_1995-2005.csv", "daily_2006-2016.csv", "daily_2017-2024.csv")]
 
 # ---- Sample definition (as in the thesis) -----------------------------------
 START, END = "1995-01", "2024-01"

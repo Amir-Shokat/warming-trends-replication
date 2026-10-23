@@ -24,7 +24,8 @@ def winsor(s, lo=C.WINSOR[0], hi=C.WINSOR[1]):
 def main():
     f = pd.read_parquet(C.PROCESSED / "firms_monthly.parquet")
     vol = pd.read_parquet(C.PROCESSED / "volatility_monthly.parquet")
-    leg_vol = pd.read_parquet(C.PROCESSED / "volatility_monthly_legacy.parquet")
+    leg_path = C.PROCESSED / "volatility_monthly_legacy.parquet"
+    leg_vol = pd.read_parquet(leg_path) if leg_path.exists() else None
     clim = pd.read_parquet(C.PROCESSED / "climate_monthly.parquet")
 
     p = f.merge(vol[["gvkey", "iid", "month", "sd", "n_days", "sum_r"]], on=["gvkey", "iid", "month"], how="left")
@@ -33,7 +34,10 @@ def main():
     p["month_gap"] = (p.sum_r - p.ret).abs()
     p["vol_flagged"] = p.month_gap > C.MAX_MONTH_GAP
     p.loc[p.vol_flagged, "sd"] = np.nan
-    p = p.merge(leg_vol, on=["gvkey", "month"], how="left")
+    if leg_vol is not None:
+        p = p.merge(leg_vol, on=["gvkey", "month"], how="left")
+    else:
+        p["sd_legacy"] = np.nan
 
     # corrected climate: (city, state)
     cc = clim[["city", "state", "month"] + CORR + LEG].drop_duplicates(["city", "state", "month"])
