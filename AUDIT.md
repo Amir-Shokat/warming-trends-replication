@@ -25,7 +25,7 @@ rebuilds it from the raw downloads and was checked against it (§3).
 | `s.d_Data Cleaning`, `sd_monthly` | daily volatility | `03_volatility.py` |
 | `panel without controls`, `attach SP500 and VIX`, `log return - new`, `Add Warmer dummy`, `Untitled4` (lags), `Year - state` | merging, controls, lags | `04_panel.py` |
 | `main regressions`, `Heat-sensitive`, `lagged regression`, `Warmer Regression`, `Quarter Industry` | Tables 2–4, A1–A6 | `06_regressions.py` (Tables 2–3 + corrected; others to port) |
-| `Untitled*`, `TEST for paper`, `temperature`, `geocode`, `Regression - Casper`, `regression - first draft`, `Data`, `adding the GICS industry codes`, `To Stata` | scratch, tutorials, abandoned versions | not needed |
+| `Untitled*`, `TEST for paper`, `temperature`, `geocode`, two early regression drafts, `Data`, `adding the GICS industry codes`, `To Stata` | scratch, tutorials, abandoned versions | not needed |
 
 ## 2. Problems found (with evidence)
 
@@ -34,7 +34,7 @@ Severity: **A** = changes results / invalidates a claim; **B** = should fix; **C
 | # | Sev | Problem | Where | Evidence | Fix in new pipeline |
 |---|---|---|---|---|---|
 | 1 | A | **Max/min "anomalies" measured against the *mean*-temperature baseline** | `min - max/Max and min calc.ipynb` cell 8: `(final_df - mean).abs()` with `mean = combined_results.csv` (MA of tmean) | Rebuilt with this formula matches thesis `Max_Ex`/`Min_Ex` 99.9%; values average 11°F / 10°F (≈ half the daily temperature range) vs ≈0.2°F for true anomalies | `tmax_anom`, `tmin_anom` vs PRISM 1991–2020 normals of tmax/tmin |
-| 2 | A | **HQ weather matched on city name only**; 1 in 3 US city names is shared (Portland OR/ME, ~30 Springfields) | `panel without controls` melt/merge on `City`; PRISM pivot `aggfunc='first'` | Thesis HQ temperature equals the correct (city, state) location in only **55.5%** of firm-months; **7,294 of 16,883 firms** got another town's weather | match on (city, state) using `state.csv` |
+| 2 | A | **HQ weather matched on city name only**; 1 in 3 US city names is shared (Portland OR/ME, ~30 Springfields) | `panel without controls` melt/merge on `City`; PRISM pivot `aggfunc='first'` | Thesis HQ temperature equals the correct (city, state) location in only **55.5%** of firm-months (thesis values checked directly; the rebuilt name-only match agrees in 54.9%, see `validation.txt`); **7,294 of 16,883 firms** got another town's weather | match on (city, state) using `state.csv` |
 | 3 | A | Foreign/non-US HQs kept because a US town shares the name (e.g. London, ON) | `Niacs-calssification`, `monthly return - data cleaning` (city-name filter) | 6.7% of thesis firm-months have no (city, state) match in the continental US | sample filter `hq_in_conus` |
 | 4 | A | **Absolute value discards the sign** of anomalies; thesis then interprets signs ("cold shocks reduce volatility") | `.abs()` in every anomaly cell | by construction | signed `tmean_anom`, `hot`/`cold` split |
 | 5 | A | Exchange temperature is one time series: 99.94% of observations list in "New York" (NASDAQ=14 and OTC=13 mapped to NY; Chicago 164 obs) | `monthly return - data cleaning` cell 24 | `log-return.csv`: NY 1,961,853 / Phil. 990 / Chicago 164 | channel not estimable with month FE; documented, not estimated |
@@ -60,11 +60,12 @@ Severity: **A** = changes results / invalidates a claim; **B** = should fix; **C
 * `fe.py` reproduces thesis coefficients exactly (e.g. Table 2 c1 9.83e-05; Table 3 c3 −0.00112);
   t-statistics within ≈1.5% (linearmodels small-sample factor).
 
-## 4. Still open / needs you
+## 4. Limitations and future work
 
-* **Adjusted daily prices**: download `prccd`, `ajexdi`, `trfd` from WRDS (if you still have
-  access) to replace the split-day filter (#6) with proper adjustment.
-* ~~Port robustness tables~~ done: `07_robustness.py` -> `output/tables/robustness_results.md`
-  (lag, warmer locations, thesis-style FE, 2-digit industry FE, fixed 1991-2020 baseline; all null).
-* Disk: intermediate CSVs (~16 GB) are regenerable and could be archived/deleted **after** you
-  confirm — nothing has been deleted.
+* **Daily price adjustment.** The daily Compustat extract has no adjustment factors, so split
+  days are filtered out (#6) rather than adjusted. Re-downloading `prccd` with `ajexdi` and
+  `trfd` from WRDS would allow properly adjusted daily returns.
+* **Historical headquarters.** HQ location is today's HQ applied to the whole sample (#13).
+* **Robustness tables** (lag, warmer locations, thesis-style FE, 2-digit industry FE, fixed
+  1991-2020 baseline) are in `07_robustness.py` -> `output/tables/robustness_results.md`;
+  all are null.

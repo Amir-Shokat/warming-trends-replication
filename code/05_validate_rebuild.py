@@ -64,5 +64,9 @@ def wrong_town_check():
 
 
 if __name__ == "__main__":
-    main()
-    wrong_town_check()
+    if not C.LEGACY_FINAL.exists():
+        print(f"skipping validation: {C.LEGACY_FINAL.name} (the thesis's final data file) not found; "
+              "output/logs/validation.txt keeps the result from the original run")
+    else:
+        main()
+        wrong_town_check()

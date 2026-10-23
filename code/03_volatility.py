@@ -21,8 +21,9 @@ import numpy as np
 import pandas as pd
 import config as C
 
-# thesis intermediates (iid already dropped in the last one) -> used only for sd_legacy
-LEGACY_FILES = [C.RAW / f for f in ("daily_1995-2005.csv", "daily_2006-2016.csv", "daily_2017-2024.csv")]
+# thesis intermediates (iid already dropped in the last one) -> used only for sd_legacy.
+# Optional: they are not distributed; without them sd_legacy is simply left out.
+LEGACY_FILES = C.LEGACY_DAILY
 # original WRDS downloads (keep iid) -> used for the corrected sd
 RAW_FILES = C.COMPUSTAT_DAILY
 
@@ -61,21 +62,26 @@ def raw_file(path):
 
 def main():
     legs, cors = [], []
-    for p in LEGACY_FILES:
-        legs.append(legacy_file(p))
+    have_legacy = all(p.exists() for p in LEGACY_FILES)
+    if have_legacy:
+        for p in LEGACY_FILES:
+            legs.append(legacy_file(p))
+    else:
+        print("thesis daily intermediates not found: skipping sd_legacy (only needed to compare with the thesis)")
     for p in RAW_FILES:
         c = raw_file(p)
         cors.append(c)
         print(f"{p.name}: firm-months {len(c):,}, split-like days dropped {int(c.n_split_days.sum()):,}")
-    leg = pd.concat(legs).drop_duplicates(["gvkey", "month"])
     cor = pd.concat(cors).drop_duplicates(["gvkey", "iid", "month"])
     cor["iid"] = cor.iid.astype(str)
     cor["gvkey"] = cor.gvkey.astype(str).str.zfill(6)
-    leg["gvkey"] = leg.gvkey.astype(str).str.zfill(6)
     cor.to_parquet(C.PROCESSED / "volatility_monthly.parquet", index=False)
-    leg.to_parquet(C.PROCESSED / "volatility_monthly_legacy.parquet", index=False)
     print(cor[["sd", "n_days"]].describe().T.round(4).to_string())
-    print(leg[["sd_legacy"]].describe().T.round(4).to_string())
+    if have_legacy:
+        leg = pd.concat(legs).drop_duplicates(["gvkey", "month"])
+        leg["gvkey"] = leg.gvkey.astype(str).str.zfill(6)
+        leg.to_parquet(C.PROCESSED / "volatility_monthly_legacy.parquet", index=False)
+        print(leg[["sd_legacy"]].describe().T.round(4).to_string())
 
 
 if __name__ == "__main__":
