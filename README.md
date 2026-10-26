@@ -4,6 +4,15 @@ A clean, reproducible rebuild of the data and regressions behind
 *Warming Trends* (MSc thesis, Utrecht, 2024), plus corrected versions of the
 variables found to be wrong. See **AUDIT.md** for what was wrong and why.
 
+## Original thesis
+
+The thesis as submitted in June 2024 is available as a PDF:
+[warming-trends-msc-thesis-2024.pdf](https://amir-shokat.github.io/assets/papers/warming-trends-msc-thesis-2024.pdf).
+This repository is the later, revised version. It rebuilds the data from the raw downloads, fixes
+the problems listed in `AUDIT.md` and redoes the calculations, so its results differ from the PDF:
+the original found weak (mostly 10%-level) effects on volatility, the corrected data show none.
+This revised version is the one I am building on for future research.
+
 ## Key results
 
 After fixing the data problems documented in `AUDIT.md`, temperature anomalies at a firm's headquarters show **no detectable effect** on monthly returns or volatility.
@@ -111,7 +120,7 @@ Requires Python 3 with pandas, numpy, pyarrow, matplotlib (`pip install -r requi
 
 ## Citation
 
-Shokatabadi, A. (2024). *Warming trends: Analysing the impact of temperature anomaly
+Shokatabadi, A. (2024). *Warming trends: Analyzing the impact of temperature anomalies
 on the risk and return of the US stock market* (MSc thesis). Utrecht University.
 
 ## License
